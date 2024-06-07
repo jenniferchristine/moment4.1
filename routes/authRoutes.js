@@ -9,7 +9,7 @@ mongoose.set("strictQuery", false);
 mongoose.connect(process.env.DATABASE).then(() => {
     console.log("Connected to MongoDB...");
 }).catch((error) => {
-    console.error("Error when connecting to database...");
+    console.error("Error when connecting to database...", error);
 });
 
 // modell för användare
