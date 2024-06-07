@@ -7,21 +7,38 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        trim: true
+        trim: true,
+        minlength: [3, "Username must be at least 3 characters long"],
+        maxlength: [20, "Username cannot be longer than 20 characters"]
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        validate: {
+            validator: function(v) { // avgör om lösenordet innehåller minst en siffra
+                return /\d/.test(v); // reguljärt uttryck som matchar siffror
+            },
+            message: "Password must contain atleast one number"
+        }
     },
     firstname: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        maxlength: [25, "First name cannot be longer than 20 characters"]
     },
     lastname: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        maxlength: [30, "Last name cannot be longer than 20 characters"]
+    },
+    email: {
+        type: String,
+        required: true,
+        trim: true,
+        unique: true,
+        match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email format"] // giltig adress får ej börja med mellanslag eller @ följt av @ och sedan tecken som återigen inte består av mellanrum eller @ följt av en punk och tecken
     },
     created: {
         type: Date,
@@ -43,9 +60,9 @@ userSchema.pre("save", async function(next) { // funktionen körs innan dokument
 });
 
 // registrera användare
-userSchema.statics.register = async function(username, password, firstname, lastname) {
+userSchema.statics.register = async function(username, password, firstname, lastname, email) {
     try {
-        const user = new this({ username, password, firstname, lastname }); // skapar ny instans av modellen user
+        const user = new this({ username, password, firstname, lastname, email }); // skapar ny instans av modellen user
         await user.save(); // väntar på att operationen ska slutföras och sparar sedan användaren
         return user;
     } catch (error) {

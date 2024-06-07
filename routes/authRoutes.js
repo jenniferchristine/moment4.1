@@ -18,14 +18,18 @@ const User = require("../models/User");
 // ny användare
 router.post("/register", async (req, res) => {
     try {
-        const { username, password, firstname, lastname } = req.body; // användaruppgifter
-        if (!username || !password || !firstname || !lastname) { // validering
-            return res.status(400).json({ error: "Invalid input, all fields required" });
+        const { username, password, firstname, lastname, email } = req.body; // användaruppgifter
+        if (!username || !password || !firstname || !lastname || !email) { // validering
+            return res.status(400).json({ error: "Invalid input - all fields require completion" });
         }
-        const user = new User({ username, password, firstname, lastname });
+        const user = new User({ username, password, firstname, lastname, email });
         await user.save();
         res.status(201).json({ message: "User created" });
     } catch (error) {
+        if (error.name === "ValidationError") { // kontrollerar validering i mongoose schemat
+            const errors = Object.values(error.errors).map(err => err.message); // vid valderingsfel, tar meddelande och sparar i errors
+            return res.status(400).json({ error: errors }); // returnerar json-svar med felmeddelande
+        }
         res.status(500).json({ error: "Server error" })
     }
 });
