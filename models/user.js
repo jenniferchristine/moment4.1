@@ -13,6 +13,16 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    firstname: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    lastname: {
+        type: String,
+        required: true,
+        trim: true
+    },
     created: {
         type: Date,
         default: Date.now
@@ -33,9 +43,9 @@ userSchema.pre("save", async function(next) { // funktionen körs innan dokument
 });
 
 // registrera användare
-userSchema.statics.register = async function(username, password) {
+userSchema.statics.register = async function(username, password, firstname, lastname) {
     try {
-        const user = new this({ username, password }); // skapar ny instans av modellen user
+        const user = new this({ username, password, firstname, lastname }); // skapar ny instans av modellen user
         await user.save(); // väntar på att operationen ska slutföras och sparar sedan användaren
         return user;
     } catch (error) {
@@ -55,7 +65,7 @@ userSchema.methods.comparePassword = async function(password) {
 // logga in
 userSchema.statics.login = async function(username, password) {
     try {
-        const user = await this.findOne(); // söker efter användare med angivet användarnamn
+        const user = await this.findOne({ username }); // söker efter användare med angivet användarnamn
         if (!user) {
             throw new Error("Invalid username or password");
         }

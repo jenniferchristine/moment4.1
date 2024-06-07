@@ -18,11 +18,11 @@ const User = require("../models/User");
 // ny användare
 router.post("/register", async (req, res) => {
     try {
-        const { username, password } = req.body; // användaruppgifter
-        if (!username || !password ) { // validering
+        const { username, password, firstname, lastname } = req.body; // användaruppgifter
+        if (!username || !password || !firstname || !lastname) { // validering
             return res.status(400).json({ error: "Invalid input, all fields required" });
         }
-        const user = new User({ username, password });
+        const user = new User({ username, password, firstname, lastname });
         await user.save();
         res.status(201).json({ message: "User created" });
     } catch (error) {
