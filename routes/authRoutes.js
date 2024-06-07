@@ -12,15 +12,17 @@ mongoose.connect(process.env.DATABASE).then(() => {
 });
 
 // modell för användare
-const user = require("..models/user");
+const User = require("../models/User");
 
 // ny användare
 router.post("/register", async (req, res) => {
     try {
-        const { username, password, firstname, lastname } = req.body; // användaruppgifter
-        if (!username || !password || !firstname || !lastname) { // validering
+        const { username, password } = req.body; // användaruppgifter
+        if (!username || !password ) { // validering
             return res.status(400).json({ error: "Invalid input, all fields required" });
         }
+        const user = new User({ message: "User created" });
+        await user.save();
         res.status(201).json({ message: "User created" });
     } catch (error) {
         res.status(500).json({ error: "Server error" })
