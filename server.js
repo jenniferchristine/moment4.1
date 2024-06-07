@@ -17,12 +17,12 @@ app.get("/api/protected", authenticateToken, (req, res) => {
 });
 
 // validera token
-function authenticateToken(req, res, next) {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
+function authenticateToken(req, res, next) { // middleware-funktion
+    const authHeader = req.headers['authorization']; // hämtar värdet 
+    const token = authHeader && authHeader.split(' ')[1]; // delar vid mellanslaget och hämtar token
 
     if (token == null) res.status(401).json({ message: "Token missing - Not authorized" })
-    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, username) => {
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, username) => { // kontroll om giltig token
         if (err) return res.status(403).json({ message: "Not correct token" });
 
         req.username = username;

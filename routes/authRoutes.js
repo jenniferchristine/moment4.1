@@ -42,11 +42,11 @@ router.post("/login", async (req, res) => {
             return res.status(401).json({ error: "Incorrect username or password"});
         }
         const isPasswordMatch = await user.comparePassword(password);
-        if (!isPasswordMatch) {
+        if (!isPasswordMatch) { // kontrollerar matchat lösenord
             return res.status(401).json({ error: "Incorrect username or password" });
         } else {
-            const payload =  { username: username };
-            const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
+            const payload =  { username: username }; // jwt med namnet payload
+            const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '1h' }); // signerar med nyckel
             const response = {
                 message: "Login successful",
                 token: token
