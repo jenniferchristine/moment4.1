@@ -11,6 +11,10 @@ app.use(bodyParser.json());
 // routes
 app.use("/api", authRoutes);
 
+app.get("/", async (req, res) => {
+    res.json({ message: "Moment 4.1" });
+});
+
 // skyddad route
 app.get("/api/protected", authenticateToken, (req, res) => {
     res.json({ message: "Protected route..." });
