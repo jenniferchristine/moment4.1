@@ -19,7 +19,7 @@ const User = require("../models/User");
 router.post("/register", async (req, res) => {
     try {
         const { username, password, firstname, lastname, email } = req.body; // användaruppgifter
-        if (!username || !password || !firstname || !lastname || !email) { // validering
+        if (!username || !password || !firstname || !lastname || !email) { // validering för tomma fält
             return res.status(400).json({ error: "Invalid input - all fields require completion" });
         }
         const user = new User({ username, password, firstname, lastname, email });
