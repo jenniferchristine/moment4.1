@@ -21,7 +21,7 @@ router.post("/register", async (req, res) => {
         if (!username || !password ) { // validering
             return res.status(400).json({ error: "Invalid input, all fields required" });
         }
-        const user = new User({ message: "User created" });
+        const user = new User({ username, password });
         await user.save();
         res.status(201).json({ message: "User created" });
     } catch (error) {
@@ -36,11 +36,16 @@ router.post("/login", async (req, res) => {
         if (!username || !password ) { // validering
             return res.status(400).json({ error: "All fields required" });
         }
-        if (username === "jeja" && password === "password123") {
-        res.status(201).json({ message: "Login successful" });
-    } else {
-        res.status(401).json({ error: "Invalid username or password"});
-    }
+        const user = await User.findOne({ username });
+        if (!user) { // kontrollera om användaren finns
+            return res.status(401).json({ error: "Incorrect username or password"});
+        }
+        const isPasswordMatch = await user.comparePassword(password);
+        if (!isPasswordMatch) {
+            return res.status(401).json({ error: "Incorrect username or password" });
+        } else {
+            res.status(201).json({ message: "Successful login!" });
+        }
     } catch (error) {
         res.status(500).json({ error: "Server error" })
     }
