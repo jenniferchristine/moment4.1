@@ -26,11 +26,15 @@ router.post("/register", async (req, res) => {
         await user.save();
         res.status(201).json({ message: "User created" });
     } catch (error) {
-        if (error.name === "ValidationError") { // kontrollerar validering i mongoose schemat
-            const errors = Object.values(error.errors).map(err => err.message); // vid valderingsfel, tar meddelande och sparar i errors
-            return res.status(400).json({ error: errors }); // returnerar json-svar med felmeddelande
+        if (error.message && error.message.includes(("Username exists"))) {
+            return res.status(400).json({ error: "This username already exists" });
+        } else if (error.message && error.message.includes("Email exists")) {
+            return res.status(400).json({ error: "This email is already in use" });
+        } else if (error.name === "ValidationError") { 
+            const errors = Object.values(error.errors).map(err => err.message); 
+            return res.status(400).json({ error: errors }); 
         }
-        res.status(500).json({ error: "Server error" })
+        res.status(500).json({ error: "Server error" });
     }
 });
 

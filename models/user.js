@@ -59,6 +59,23 @@ userSchema.pre("save", async function(next) { // funktionen körs innan dokument
     }
 });
 
+// kontrollera om användarnamnet eller email redan finns
+userSchema.pre("save", async function(next) {
+    try { 
+        const existingUser = await this.constructor.findOne({ $or: [{ username: this.username }, { email: this.email }] });
+        if (existingUser) {
+            if (existingUser.username === this.username) {
+                throw new Error("Username exists");
+            } else if (existingUser.email === this.email) {
+                throw new Error("Email exists");
+            }
+        }
+        next(); // fortsätter med sparprocessen om användarnamnet och email är unika
+    } catch (error) {
+        next(error); // skicka fel till nästa middleware
+    }
+});
+
 // registrera användare
 userSchema.statics.register = async function(username, password, firstname, lastname, email) {
     try {
