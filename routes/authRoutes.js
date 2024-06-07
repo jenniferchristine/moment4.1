@@ -26,12 +26,12 @@ router.post("/register", async (req, res) => {
         await user.save();
         res.status(201).json({ message: "User created" });
     } catch (error) {
-        if (error.message && error.message.includes(("Username exists"))) {
-            return res.status(400).json({ error: "This username already exists" });
+        if (error.message && error.message.includes(("Username exists"))) { // tar error + meddelande från pre-save funktion för att jämföra
+            return res.status(400).json({ error: "This username already exists" }); // om lika meddelande returneras error + meddelande till användare
         } else if (error.message && error.message.includes("Email exists")) {
             return res.status(400).json({ error: "This email is already in use" });
-        } else if (error.name === "ValidationError") { 
-            const errors = Object.values(error.errors).map(err => err.message); 
+        } else if (error.name === "ValidationError") { // validering från mongoose
+            const errors = Object.values(error.errors).map(err => err.message); // tar felmeddelande från schema, gör en array och map:ar dessa för att hämta endast felmeddelandena för ny array som heter errors
             return res.status(400).json({ error: errors }); 
         }
         res.status(500).json({ error: "Server error" });
