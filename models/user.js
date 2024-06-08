@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema({
         required: [true, "Du måste ange en e-postadress"],
         trim: true,
         unique: [true, "E-postadress används redan"],
-        match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Ogiltigt format (exempel@live.com)"] // giltig adress får ej börja med mellanslag eller @ följt av @ och sedan tecken som återigen inte består av mellanrum eller @ följt av en punk och tecken
+        match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Ogiltigt format (ex. exempel@live.com)"] // giltig adress får ej börja med mellanslag eller @ följt av @ och sedan tecken som återigen inte består av mellanrum eller @ följt av en punk och tecken
     },
     created: {
         type: Date,

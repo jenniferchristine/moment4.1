@@ -17,11 +17,10 @@ const User = require("../models/user");
 
 // ny användare
 router.post("/register", async (req, res) => {
-    /*
     try { // med denna kod fungerar inte registreringen
         const user = new User(req.body);
         await user.validate(); // validerar mot mongoose schemat
-        const result = await user.create(req.body);
+        const result = await user.save();
         return res.status(201).json(result);
     } catch (error) {
         if (error.name === "ValidationError") { // kontrollerar valieringsfel
@@ -33,7 +32,7 @@ router.post("/register", async (req, res) => {
         }
         return res.status(400).json({ message: "Error adding data", error: error.message });
     }
-    */
+   /*
     try { // denna koden fungerar ej för att skriva ut meddelande till användare
         const { username, password, firstname, lastname, email } = req.body; // användaruppgifter
         if (!username || !password || !firstname || !lastname || !email) { // validering för tomma fält
@@ -56,6 +55,7 @@ router.post("/register", async (req, res) => {
         }
         res.status(500).json({ error: "Server error" });
     }
+    */
 });
 
 // login för användare
