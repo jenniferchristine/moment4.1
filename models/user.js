@@ -4,21 +4,21 @@ const bcrypt = require("bcrypt");
 // schema för användare
 const userSchema = new mongoose.Schema({
     username: {
-        type: String,
-        required: true,
-        unique: true,
+        type: [String, "Felaktigt användarnamn"],
+        required: [true, "Du måste ange ett användarnamn"],
+        unique: [true, "Användarnamnet existerar redan"],
         trim: true,
-        minlength: [3, "Username must be at least 3 characters long"],
-        maxlength: [20, "Username cannot be longer than 20 characters"]
+        minlength: [3, "Användarnamnet måste vara minst 3 tecken långt"],
+        maxlength: [20, "Användarnamnet får inte var längre än 20 tecken"]
     },
     password: {
-        type: String,
-        required: true,
+        type: [String, "Felaktigt lösenord"],
+        required: [true, "Du måste ange ett lösenord"],
         validate: {
             validator: function(v) { // avgör om lösenordet innehåller minst en siffra
                 return /\d/.test(v); // reguljärt uttryck som matchar siffror
             },
-            message: "Password must contain atleast one number"
+            message: "Lösenordet måste inneha minst en siffra"
         }
     },
     firstname: {
