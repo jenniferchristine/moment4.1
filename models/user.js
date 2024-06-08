@@ -101,10 +101,12 @@ userSchema.statics.login = async function(username, password) {
     try {
         const user = await this.findOne({ username }); // söker efter användare med angivet användarnamn
         if (!user) {
+            errors.username = "Felaktigt användarnamn";
             throw new Error("Invalid username or password");
         }
         const isPasswordMatch = await user.comparePassword(password);
         if (!isPasswordMatch) {
+            errors.password = "Felaktigt lösenord";
             throw new Error("Invalid username or password");
         }
         return user; // returneras om både användarnamn och lösenord är korrekta
