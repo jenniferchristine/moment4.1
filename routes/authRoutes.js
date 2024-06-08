@@ -23,6 +23,7 @@ router.post("/register", async (req, res) => {
             return res.status(400).json({ error: "Invalid input - all fields require completion" });
         }
         const user = new User({ username, password, firstname, lastname, email });
+        await user.validate();
         await user.save();
         res.status(201).json({ message: "User created" });
     } catch (error) {
