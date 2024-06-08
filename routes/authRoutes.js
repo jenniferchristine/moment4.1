@@ -32,6 +32,30 @@ router.post("/register", async (req, res) => {
         }
         return res.status(400).json({ message: "Error adding data", error: error.message });
     }
+    /*
+        try { // denna koden fungerar ej för att skriva ut meddelande till användare
+        const { username, password, firstname, lastname, email } = req.body; // användaruppgifter
+        if (!username || !password || !firstname || !lastname || !email) { // validering för tomma fält
+            return res.status(400).json({ error: "Invalid input - all fields require completion" });
+        }
+        const user = new User({ username, password, firstname, lastname, email });
+        await user.save();
+        res.status(201).json({ message: "User created" });
+    } catch (error) {
+        if (error.message && error.message.includes(("Username exists"))) { // tar error + meddelande från pre-save funktion för att jämföra
+            return res.status(400).json({ error: "This username already exists" }); // om lika meddelande returneras error + meddelande till användare
+        } else if (error.message && error.message.includes("Email exists")) {
+            return res.status(400).json({ error: "This email is already in use" });
+        } else if (error.name === "ValidationError") {
+            const errors = {}; // vid valideringsfel skapas error
+            for (let field in error.errors) { // loopar över fält med valideringsfel
+                errors[field] = error.errors[field].message; // och lägger till felmeddelande
+            }
+            return res.status(400).json({ errors });
+        }
+        res.status(500).json({ error: "Server error" });
+    }    
+    */
 });
 
 // login för användare
