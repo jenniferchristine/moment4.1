@@ -79,8 +79,7 @@ userSchema.pre("save", async function(next) {
 // registrera användare
 userSchema.statics.register = async function(username, password, firstname, lastname, email) {
     try {
-        const user = new this({ username, password, firstname, lastname, email }); // skapar ny instans av modellen user
-        await user.validate(); 
+        const user = new this({ username, password, firstname, lastname, email }); // skapar ny instans av modellen user 
         await user.save(); // väntar på att operationen ska slutföras och sparar sedan användaren
         return user;
     } catch (error) {
