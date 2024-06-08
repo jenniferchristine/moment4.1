@@ -17,7 +17,8 @@ const User = require("../models/user");
 
 // ny användare
 router.post("/register", async (req, res) => {
-    try {
+    /*
+    try { // med denna kod fungerar inte registreringen
         const user = new User(req.body);
         await user.validate(); // validerar mot mongoose schemat
         const result = await user.create(req.body);
@@ -32,8 +33,8 @@ router.post("/register", async (req, res) => {
         }
         return res.status(400).json({ message: "Error adding data", error: error.message });
     }
-    /*
-        try { // denna koden fungerar ej för att skriva ut meddelande till användare
+    */
+    try { // denna koden fungerar ej för att skriva ut meddelande till användare
         const { username, password, firstname, lastname, email } = req.body; // användaruppgifter
         if (!username || !password || !firstname || !lastname || !email) { // validering för tomma fält
             return res.status(400).json({ error: "Invalid input - all fields require completion" });
@@ -54,15 +55,14 @@ router.post("/register", async (req, res) => {
             return res.status(400).json({ errors });
         }
         res.status(500).json({ error: "Server error" });
-    }    
-    */
+    }
 });
 
 // login för användare
 router.post("/login", async (req, res) => {
     try {
         const { username, password } = req.body; // inloggningsuppgifter
-        if (!username || !password ) { // validering
+        if (!username || !password) { // validering
             return res.status(400).json({ error: "All fields required" });
         }
         const user = await User.findOne({ username });
@@ -73,7 +73,7 @@ router.post("/login", async (req, res) => {
         if (!isPasswordMatch) { // kontrollerar matchat lösenord
             return res.status(401).json({ error: "Incorrect username or password" });
         } else {
-            const payload =  { username: username }; // jwt med namnet payload
+            const payload = { username: username }; // jwt med namnet payload
             const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '1h' }); // signerar med nyckel
             const response = {
                 message: "Login successful",
