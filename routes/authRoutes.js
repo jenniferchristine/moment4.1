@@ -18,27 +18,19 @@ const User = require("../models/user");
 // ny användare
 router.post("/register", async (req, res) => {
     try {
-        const { username, password, firstname, lastname, email } = req.body; // användaruppgifter
-        if (!username || !password || !firstname || !lastname || !email) { // validering för tomma fält
-            return res.status(400).json({ error: "Invalid input - all fields require completion" });
-        }
-        const user = new User({ username, password, firstname, lastname, email });
-        await user.validate();
-        await user.save();
-        res.status(201).json({ message: "User created" });
+        const user = new User(req.body);
+        await user.validate(); // validerar mot mongoose schemat
+        const result = await user.create(req.body);
+        return res.status(201).json(result);
     } catch (error) {
-        if (error.message && error.message.includes(("Username exists"))) { // tar error + meddelande från pre-save funktion för att jämföra
-            return res.status(400).json({ error: "This username already exists" }); // om lika meddelande returneras error + meddelande till användare
-        } else if (error.message && error.message.includes("Email exists")) {
-            return res.status(400).json({ error: "This email is already in use" });
-        } else if (error.name === "ValidationError") {
+        if (error.name === "ValidationError") { // kontrollerar valieringsfel
             const errors = {}; // vid valideringsfel skapas error
             for (let field in error.errors) { // loopar över fält med valideringsfel
                 errors[field] = error.errors[field].message; // och lägger till felmeddelande
             }
             return res.status(400).json({ errors });
         }
-        res.status(500).json({ error: "Server error" });
+        return res.status(400).json({ message: "Error adding data", error: error.message });
     }
 });
 
