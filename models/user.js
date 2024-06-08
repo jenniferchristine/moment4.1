@@ -5,40 +5,40 @@ const bcrypt = require("bcrypt");
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
-        required: true,
-        unique: true,
+        required: [true, "Du måste ange ett användarnamn"],
+        unique: [true, "Användarnamnet används redan"],
         trim: true,
-        minlength: [3, "Username must be at least 3 characters long"],
-        maxlength: [20, "Username cannot be longer than 20 characters"]
+        minlength: [3, "Användarnamnet måste vara minst 3 tecken långt"],
+        maxlength: [20, "Användarnamnet får inte var längre än 20 tecken"]
     },
     password: {
         type: String,
-        required: true,
+        required: [true, "Du måste ange ett lösenord"],
         validate: {
             validator: function(v) { // avgör om lösenordet innehåller minst en siffra
                 return /\d/.test(v); // reguljärt uttryck som matchar siffror
             },
-            message: "Password must contain atleast one number"
+            message: "Lösenordet måste inneha minst en siffra"
         }
     },
     firstname: {
         type: String,
-        required: true,
+        required: [true, "Du måste ange ett förnamn"],
         trim: true,
-        maxlength: [25, "First name cannot be longer than 20 characters"]
+        maxlength: [25, "Förnamnet får inte vara längre än 25 tecken"]
     },
     lastname: {
         type: String,
-        required: true,
+        required: [true, "Du måste ange ett efternamn"],
         trim: true,
-        maxlength: [30, "Last name cannot be longer than 20 characters"]
+        maxlength: [30, "Efternamnet får inte vara längre än 30 tecken"]
     },
     email: {
         type: String,
-        required: true,
+        required: [true, "Du måste ange en e-postadress"],
         trim: true,
-        unique: true,
-        match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email format"] // giltig adress får ej börja med mellanslag eller @ följt av @ och sedan tecken som återigen inte består av mellanrum eller @ följt av en punk och tecken
+        unique: [true, "E-postadress används redan"],
+        match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Ogiltigt format (exempel@live.com)"] // giltig adress får ej börja med mellanslag eller @ följt av @ och sedan tecken som återigen inte består av mellanrum eller @ följt av en punk och tecken
     },
     created: {
         type: Date,
