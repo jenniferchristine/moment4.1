@@ -47,12 +47,10 @@ router.post("/login", async (req, res) => {
         }
         const user = await User.findOne({ username });
         if (!user) { // kontrollera om användaren finns
-            errors.username = "Felaktigt användarnamn";
             return res.status(401).json({ error: "Incorrect username or password TEST" });
         }
         const isPasswordMatch = await user.comparePassword(password);
         if (!isPasswordMatch) { // kontrollerar matchat lösenord
-            errors.password = "Felaktigt lösenord";
             return res.status(401).json({ error: "Incorrect username or password TEST" });
         } else {
             const payload =  { username: username }; // jwt med namnet payload
