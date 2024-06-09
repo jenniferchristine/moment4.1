@@ -17,7 +17,7 @@ const User = require("../models/user");
 
 // ny användare
 router.post("/register", async (req, res) => {
-    try { // med denna kod fungerar inte registreringen
+    try {
         const user = new User(req.body);
         await user.validate(); // validerar mot mongoose schemat
         const result = await user.save();

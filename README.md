@@ -10,9 +10,9 @@
 # Autentisering och säkerhet
 
 >### Laboration i Moment 4 - Uppgift 1:
->Denna uppgift är den första delen av Moment 4 - Autentisering och säkerhet. Detta är en REST-webbtjänst byggt med Express och Moongose schema som hanterar användare och inloggning. Tjänsten innehar akronymen CRUD (Create Read Update Delete) för att hantera data och låter resurser begäras från annan ursprung. 
+>Denna uppgift är den första delen av Moment 4 - Autentisering och säkerhet. Detta är en REST-webbtjänst byggt med Express och Moongose schema som hanterar användare och inloggning. Tjänsten innehar akronymen CRUD för att hantera data i en databas samt CORS för att låta resurser begäras från annan ursprung. 
 >
->APIet använder en MongoCB-databas och kan användas genom att köra kommando npm install för installation av nödvändiga npm-paket och npm run server för att starta webbtjänsten. En liveversion av webbtjänsten finns tillgänglig här: [Länk till API](https://moment4-1.onrender.com/)
+>APIet använder en MongoDB-databas och kan användas genom att köra kommando npm install för installation av nödvändiga npm-paket och npm run server för att starta webbtjänsten. En liveversion av webbtjänsten finns tillgänglig här: [Länk till API](https://moment4-1.onrender.com/)
 >
 >Denna webbtjänst är skapad med funktionalitet för autentisering med registrering av användarkonton samt inloggning och använder även JSON Web Token för sessionshantering samt förhindra obehörig åtkomst. Den är också skapad med syftet att skydda känslig data.
 
@@ -24,14 +24,14 @@
 
 | Metod | Ändpunkt | Beskrivning |
 |-----------------|-----------------|-----------------|
-| GET | / | - |
-| POST | / | - |
-| PUT | / | - |
-| DELETE | / | - |
+| GET | / | Hämtar webbtjänsten |
+| GET | /api/protected | Skapar route som kräver autentisering |
+| POST | /api/login | Route för inloggning |
+| POST | /api/register | Route för registrering |
 
 <br>
 
-#### Ett user-objekt returneras/skickas som JSON med följande struktur:
+#### Ett user-objekt returneras/skickas som JSON med följande struktur vid registrering:
 
 <br>
 
