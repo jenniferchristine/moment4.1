@@ -26,9 +26,18 @@ function authenticateToken(req, res, next) { // middleware-funktion
         next();
     });
 }
-/*
-// hämta användare
-app.get("/home", authenticateToken, async (req, res) => {
+
+// routes
+app.use("/api", authRoutes);
+
+app.get("/", async (req, res) => {
+    res.json({ message: "Moment 4.1" });
+});
+
+// skyddad route
+app.get("/api/protected", authenticateToken, async (req, res) => {
+    res.json({ message: "Protected route..." });
+
     try {
         const user = await User.findById(req.user.userId); // hämtar id från token
         if (!user) {
@@ -38,18 +47,6 @@ app.get("/home", authenticateToken, async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: "Server error" });
     }
-});
-*/
-// routes
-app.use("/api", authRoutes);
-
-app.get("/", async (req, res) => {
-    res.json({ message: "Moment 4.1" });
-});
-
-// skyddad route
-app.get("/api/protected", authenticateToken, (req, res) => {
-    res.json({ message: "Protected route..." });
 });
 
 module.exports = { authenticateToken }; // exportera funktion
