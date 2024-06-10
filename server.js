@@ -39,8 +39,6 @@ app.get("/api/protected", authenticateToken, async (req, res) => {
     res.json({ message: "Protected route..." });
 });
 
-module.exports = { authenticateToken }; // exportera funktion
-
 // starta
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
