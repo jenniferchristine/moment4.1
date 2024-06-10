@@ -1,8 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
 const jwt = require("jsonwebtoken");
-const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
@@ -38,7 +38,7 @@ app.get("/", async (req, res) => {
 app.get("/api/protected", authenticateToken, async (req, res) => {
     res.json({ message: "Protected route..." });
 
-    try {
+    /*try {
         const user = await User.findById(req.user.userId); // hämtar id från token
         if (!user) {
             return res.status(404).json({ error: "User not found" });
@@ -46,7 +46,7 @@ app.get("/api/protected", authenticateToken, async (req, res) => {
         res.status(200).json(user);
     } catch (error) {
         res.status(500).json({ error: "Server error" });
-    }
+    }*/
 });
 
 module.exports = { authenticateToken }; // exportera funktion
