@@ -3,7 +3,6 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const { authenticateToken } = require("../server"); // importera funktion
 const User = require("../models/user"); // modell för användare
 
 // anslutning
