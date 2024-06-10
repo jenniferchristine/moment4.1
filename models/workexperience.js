@@ -34,7 +34,7 @@ const workexperienceSchema = new mongoose.Schema({
 const workExperience = mongoose.model("workexperiences", workexperienceSchema);
 
 // hitta innehåll
-app.get("/workexperiences", async (req, res) => {
+app.get("/api/workexperiences", async (req, res) => {
     try {
         const result = await workExperience.find({});
         return res.json(result);
