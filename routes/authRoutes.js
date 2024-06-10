@@ -3,7 +3,8 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const { authenticateToken } = require("../app"); // importera funktion
+const { authenticateToken } = require("../server"); // importera funktion
+const User = require("../models/user"); // modell för användare
 
 // anslutning
 mongoose.set("strictQuery", false);
@@ -12,9 +13,6 @@ mongoose.connect(process.env.DATABASE).then(() => {
 }).catch((error) => {
     console.error("Error when connecting to database...", error);
 });
-
-// modell för användare
-const User = require("../models/user");
 
 // ny användare
 router.post("/register", async (req, res) => {
@@ -61,19 +59,6 @@ router.post("/login", async (req, res) => {
         }
     } catch (error) {
         res.status(500).json({ error: "Server error" })
-    }
-});
-
-// hämta användare
-router.get("/home", authenticateToken, async (req, res) => {
-    try {
-        const user = await User.findById(req.user.userId); // hämtar id från token
-        if (!user) {
-            return res.status(404).json({ error: "User not found" });
-        }
-        res.status(200).json(user);
-    } catch (error) {
-        res.status(500).json({ error: "Server error" });
     }
 });
 
