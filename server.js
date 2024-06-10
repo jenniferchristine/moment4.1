@@ -36,6 +36,8 @@ function authenticateToken(req, res, next) { // middleware-funktion
     });
 }
 
+module.exports = { authenticateToken }; // exportera funktion
+
 // starta
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
