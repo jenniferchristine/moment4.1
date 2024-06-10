@@ -36,18 +36,10 @@ app.get("/", async (req, res) => {
 
 // skyddad route
 app.get("/api/protected", authenticateToken, async (req, res) => {
-    try {
-        const userId = req.username; // hämtar användar id från autentiserad token
-        const user = await User.findById(userId); // hämtar den inloggades uppgifter
-
-        if (!user) {
-            return res.status(404).json({ error: "User not found" });
-        }
-        res.status(200).json(user);
-    } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message });
-    }
+    res.json({ message: "Protected route..." });
 });
+
+module.exports = { authenticateToken }; // exportera funktion
 
 // starta
 app.listen(port, () => {
