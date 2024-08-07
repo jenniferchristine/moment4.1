@@ -11,18 +11,16 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // validera token
-function authenticateToken(req, res, next) { // middleware-funktion
-    const authHeader = req.headers['authorization']; // hämtar värdet 
-    const token = authHeader && authHeader.split(' ')[1]; // delar vid mellanslaget och hämtar token
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
 
-    if (token == null) {
-        res.status(401).json({ message: "Token missing - Not authorized" })
-    }
-    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, username) => { // kontroll om giltig token
-        if (err) {
-            return res.status(403).json({ message: "Not correct token" });
-        }
-        req.username = username;
+    if (token == null) return res.status(401).json({ message: "Token missing - Not authorized" });
+
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, user) => {
+        if (err) return res.status(403).json({ message: "Not correct token" });
+
+        req.user = user;
         next();
     });
 }
@@ -36,7 +34,18 @@ app.get("/", async (req, res) => {
 
 // skyddad route
 app.get("/api/protected", authenticateToken, async (req, res) => {
-    res.json({ message: "Protected route..." });
+    try {
+        const user = await User.findOne({ username: req.user.username }, 'username firstname lastname email');
+        
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        
+        console.log("User data:", user);
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching user info" });
+    }
 });
 
 // starta

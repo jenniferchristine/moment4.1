@@ -30,7 +30,6 @@ router.post("/register", async (req, res) => {
         }
         return res.status(400).json({ message: "Error adding data", error: error.message });
     }
-
 });
 
 // login för användare
