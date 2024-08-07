@@ -4,7 +4,7 @@ const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const path = require('path');
+const path = require('path'); // absolut väg för user då den inte kunde nås
 const User = require(path.join(__dirname, 'models', 'user'));
 
 const app = express();
@@ -36,7 +36,7 @@ app.get("/", async (req, res) => {
 
 // skyddad route
 app.get("/api/protected", authenticateToken, async (req, res) => {
-    try {
+    try { // förse inloggad med användaruppgifter som registrerats
         const user = await User.findOne({ username: req.user.username }, 'username firstname lastname email');
         
         if (!user) {
