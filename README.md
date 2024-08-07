@@ -26,8 +26,8 @@
 |-----------------|-----------------|-----------------|
 | GET | / | Hämtar webbtjänsten |
 | GET | /api/protected | Skapar route som kräver autentisering |
-| POST | /api/login | Route för inloggning |
-| POST | /api/register | Route för registrering |
+| POST | /login | Route för inloggning |
+| POST | /register | Route för registrering |
 
 <br>
 
