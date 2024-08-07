@@ -4,6 +4,8 @@ const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const path = require('path');
+const User = require(path.join(__dirname, 'models', 'user'));
 
 const app = express();
 const port = process.env.PORT || 3000;
